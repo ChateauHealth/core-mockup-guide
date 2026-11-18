@@ -271,7 +271,7 @@ figcaption { margin-top: 16px; color: var(--color-muted); font-size: var(--t-cap
         <span class="tag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2"/></svg>Copy and paste</span></li>
       <li class="cell"><span class="num">3</span><h3>Walk and talk</h3><p>Dictate what you like as you click around.</p></li>
       <li class="cell"><span class="num">4</span><h3>Say &ldquo;that's everything&rdquo;</h3><p>Claude writes your picks to one file.</p></li>
-      <li class="cell"><span class="num">5</span><h3>Paste prompt two in CORE</h3><p>Claude builds your picks on a new branch.</p>
+      <li class="cell"><span class="num">5</span><h3>Paste prompt two in CORE</h3><p>Claude builds your picks and puts them on staging.</p>
         <span class="tag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2"/></svg>Copy and paste</span></li>
     </ol>
   </div>
@@ -482,7 +482,7 @@ End the file with a short note on using it in CORE: the mockup is plain React an
       <div class="head">
         <p class="step reveal"><b>5</b>Step 5 of 5</p>
         <h2 id="h12" class="reveal" style="--i:1">Open CORE and paste prompt two.</h2>
-        <p class="lede reveal" style="--i:2">Start a new session in <code>treatment-app-blueprint</code>. Claude builds each pick on a new branch with CORE's own components. <strong>Nothing goes live.</strong></p>
+        <p class="lede reveal" style="--i:2">Start a new session in <code>treatment-app-blueprint</code>. Claude builds each pick with CORE's own components and puts it on <strong>staging</strong> for you to click through.</p>
       </div>
       <p class="note reveal" style="--i:3">Used a different folder name in step 1? Change the two paths at the top.</p>
     </div>
@@ -504,13 +504,14 @@ End the file with a short note on using it in CORE: the mockup is plain React an
 Bring every pick into this app in one pass:
 
 1. For each pick, find where it belongs here and what already exists. Rebuild it with CORE's own components, design tokens and patterns. Match the look and behaviour. Never copy the mockup's sample data.
-2. Work on a new branch and follow this repo's own rules. Do not merge, deploy, or touch staging or production.
+2. Follow this repo's own rules and team skills for branches, pull requests and staging.
 3. Build the picks in the order listed, and check each one in the preview before moving on.
-4. Don't stop to ask me about small choices. Make the sensible call and write it down. Stop only for something that would change real data, permissions or what staff see in production.
+4. Don't stop to ask me about small choices. Make the sensible call and write it down. Stop only for something that would change real data or permissions.
+5. When the picks are built, put the work on staging so I can click through it, and open a pull request. Leave production to me.
 
-When you're done, give me one summary: what you built and where to see it, what you skipped or changed and why, and anything that needs my decision.</pre>
+When you're done, give me one summary: where to see it on staging, what you built, what you skipped or changed and why, and anything that needs my decision.</pre>
       </div>
-      <p class="cbFoot">One pass, on a branch. You review at the end.</p>
+      <p class="cbFoot">One pass. You review it on staging. Production waits for you.</p>
     </div>
   </div>
 </section>
@@ -535,7 +536,7 @@ When you're done, give me one summary: what you built and where to see it, what 
     <div class="text">
       <div class="head">
         <h2 id="h14" class="reveal">Two prompts. One walk-through. Your picks in CORE.</h2>
-        <p class="lede reveal" style="--i:1">Look over the branch Claude built, then decide what ships.</p>
+        <p class="lede reveal" style="--i:1">Click through staging, then decide what ships.</p>
       </div>
       <a class="btn quiet reveal" style="--i:2" href="#s1">Back to the start</a>
     </div>
