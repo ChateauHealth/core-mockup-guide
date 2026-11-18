@@ -378,7 +378,7 @@ End the file with a short note on using it in CORE: the mockup is plain React an
     <figure class="frame reveal" style="--i:1">
       <div class="shot">
         <img src="assets/screen-home-exec.webp" alt="The mockup's Home dashboard for the Executive role: census, money collected, a Needs your attention list and a Waiting on you list." width="1920" height="1200" loading="lazy">
-        <span class="mark soft below" style="left:83%;top:0.8%;width:15.4%;height:4.6%"><span>Role switcher</span></span>
+        <span class="mark soft below" style="left:86%;top:0.8%;width:12.2%;height:4.6%"><span>Role switcher</span></span>
       </div>
     </figure>
   </div>
@@ -406,23 +406,23 @@ End the file with a short note on using it in CORE: the mockup is plain React an
   <div class="wrap split">
     <div class="text">
       <div class="head">
-        <h2 id="h9" class="reveal">Name the page and the heading.</h2>
+        <h2 id="h9" class="reveal">Name the page and name what you like.</h2>
       </div>
       <div class="pair reveal" style="--i:1">
+        <div class="quote good">
+          <span class="k"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.75 6 6 9-13.5"/></svg>For example</span>
+          <p>&ldquo;I'm on the Finance Budgets page. I love the Department budgets panel, with the bars that show where spend should be today. I want that.&rdquo;</p>
+        </div>
         <div class="quote">
           <span class="k"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>Too vague</span>
-          <p>&ldquo;I like the board thing.&rdquo;</p>
-        </div>
-        <div class="quote good">
-          <span class="k"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.75 6 6 9-13.5"/></svg>Specific enough</span>
-          <p>&ldquo;On the Daily board, the panel titled &lsquo;Where clients are&rsquo; looks awesome. I want that.&rdquo;</p>
+          <p>&ldquo;I like the budget thing.&rdquo;</p>
         </div>
       </div>
     </div>
     <figure class="frame reveal" style="--i:1">
       <div class="shot">
-        <img src="assets/screen-daily-board.webp" alt="The mockup's Daily board. The panel titled Where clients are is outlined: three columns for In the house, At group and Signed out." width="1920" height="1200" loading="lazy">
-        <span class="mark" style="left:18%;top:28.4%;width:80.1%;height:46.3%"><span>&ldquo;Where clients are&rdquo;</span></span>
+        <img src="assets/screen-budgets.webp" alt="The mockup's Finance Budgets page. The Department budgets panel is outlined: one row per department with a spending bar, a marker for where spend should be today, and a status." width="1920" height="1200" loading="lazy">
+        <span class="mark" style="left:17.8%;top:44.6%;width:54.3%;height:53.7%"><span>Department budgets</span></span>
       </div>
     </figure>
   </div>
@@ -435,10 +435,10 @@ End the file with a short note on using it in CORE: the mockup is plain React an
       <h2 id="h10" class="reveal">Four things worth saying out loud.</h2>
     </div>
     <ul class="cells c4 reveal" style="--i:1">
-      <li class="cell"><h3>The page</h3><p>Read it off the top bar.</p><span class="say">&ldquo;I'm on Revenue, Billing review.&rdquo;</span></li>
-      <li class="cell"><h3>The heading</h3><p>Any title, tab or label on screen.</p><span class="say">&ldquo;The table with the &lsquo;Ready to bill&rsquo; tab.&rdquo;</span></li>
-      <li class="cell"><h3>The role</h3><p>Pages change by role.</p><span class="say">&ldquo;I'm viewing as Executive.&rdquo;</span></li>
-      <li class="cell"><h3>The reason</h3><p>Layout, colour, wording or behaviour.</p><span class="say">&ldquo;I like the status in the last column.&rdquo;</span></li>
+      <li class="cell"><h3>The page</h3><p>Read it off the top bar.</p><span class="say">&ldquo;I'm on Finance, Budgets.&rdquo;</span></li>
+      <li class="cell"><h3>What you like</h3><p>A panel, table, button, colour or layout. Use any words on screen.</p><span class="say">&ldquo;The Department budgets panel.&rdquo;</span></li>
+      <li class="cell"><h3>The role</h3><p>Pages change by role.</p><span class="say">&ldquo;I'm viewing as Finance.&rdquo;</span></li>
+      <li class="cell"><h3>The reason</h3><p>Layout, colour, wording or behaviour.</p><span class="say">&ldquo;I like the marker for where spend should be today.&rdquo;</span></li>
     </ul>
   </div>
 </section>
@@ -453,7 +453,7 @@ End the file with a short note on using it in CORE: the mockup is plain React an
         <p class="lede reveal" style="--i:2">Claude writes one file in your review folder. Each pick lists <strong>where it is, what it's for, what you liked and the code that builds it.</strong></p>
       </div>
     </div>
-    <div class="doc reveal" style="--i:2" role="img" aria-label="Example of the picks file. Pick 1: Where clients are, a component. Where: Care, Daily board, under the heading Where clients are, viewed as Program staff. What it's for: shows who is in the house, at group or signed out right now. What you liked: three columns and the late flag. Code: src/pages/care.jsx and src/styles/components.css.">
+    <div class="doc reveal" style="--i:2" role="img" aria-label="Example of the picks file. Pick 1: Department budgets, a component. Where: Finance, Budgets, under the heading Department budgets, viewed as Finance. What it's for: shows each department's spending against its monthly budget. What you liked: the bars that show where spend should be today. Code: src/pages/finance.jsx and src/components/spend.jsx.">
       <div class="cbHead">
         <span class="cbFile">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
@@ -461,15 +461,15 @@ End the file with a short note on using it in CORE: the mockup is plain React an
         </span>
       </div>
       <div class="docBody" aria-hidden="true">
-        <h3>1. Where clients are</h3>
+        <h3>1. Department budgets</h3>
         <dl>
           <div><dt>Type</dt><dd>Component</dd></div>
-          <div><dt>Where</dt><dd>Care &rsaquo; Daily board, heading &ldquo;Where clients are&rdquo;, as Program staff</dd></div>
-          <div><dt>What it's for</dt><dd>Shows who is in the house, at group or signed out right now</dd></div>
-          <div><dt>What you liked</dt><dd>&ldquo;Three columns, and the late flag jumps out.&rdquo;</dd></div>
-          <div><dt>Code</dt><dd class="mono">core-vision-prototype/src/pages/care.jsx<br>core-vision-prototype/src/styles/components.css</dd></div>
+          <div><dt>Where</dt><dd>Finance &rsaquo; Budgets, heading &ldquo;Department budgets&rdquo;, as Finance</dd></div>
+          <div><dt>What it's for</dt><dd>Shows each department's spending against its monthly budget</dd></div>
+          <div><dt>What you liked</dt><dd>&ldquo;The bars that show where spend should be today.&rdquo;</dd></div>
+          <div><dt>Code</dt><dd class="mono">core-vision-prototype/src/pages/finance.jsx<br>core-vision-prototype/src/components/spend.jsx</dd></div>
         </dl>
-        <p class="more">2. Billing review table &nbsp;&middot;&nbsp; 3. Needs your attention list &nbsp;&middot;&nbsp; &hellip;</p>
+        <p class="more">2. Waiting for a decision list &nbsp;&middot;&nbsp; 3. Billing review table &nbsp;&middot;&nbsp; &hellip;</p>
       </div>
     </div>
   </div>
