@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CORE UI Mockup: pick what you like</title>
+<meta name="description" content="A short scrolling guide: clone the CORE UI Mockup, review it with Claude, dictate what you like, and bring your picks into CORE.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CORE UI Mockup: pick what you like">
+<meta property="og:description" content="Two prompts and one walk-through. Claude sets up the mockup, takes notes while you talk, and writes up your picks.">
+<meta property="og:image" content="https://chateauhealth.github.io/core-mockup-guide/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Crect x='7' y='7' width='18' height='18' rx='4' fill='none' stroke='%230099ff' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Tokens: Framer style from Refero (black canvas, white type, one electric-blue accent).
+   Type scale ratio 1.333 on a 1920-wide reference: 18 / 24 / 32 / 64 / 84, plus a 14px footer. */
+:root {
+  --color-bg: #000000;
+  --color-panel: #111111;
+  --color-chip: #141414;
+  --color-stage: #171717;
+  --color-composer: #1a1a1a;
+  --color-border: rgba(255, 255, 255, 0.10);
+  --color-hair: rgba(255, 255, 255, 0.06);
+  --color-fg: #ffffff;
+  --color-soft: #cccccc;
+  --color-muted: #999999;
+  --color-accent: #0099ff;
+
+  --t-hero: clamp(2.5rem, 4.4vw, 5.25rem);
+  --t-h: clamp(2rem, 3.3vw, 4rem);
+  --t-sub: clamp(1.25rem, 1.67vw, 2rem);
+  --t-body: clamp(1.0625rem, 1.25vw, 1.5rem);
+  --t-cap: clamp(1rem, 0.94vw, 1.125rem);
+  --t-foot: 0.875rem;
+
+  --safe: clamp(1.5rem, 5vw, 6rem);
+  --gap: clamp(1.5rem, 2.5vw, 3rem);
+  --r: 8px;
+  --r-lg: 16px;
+  --bar: 56px;
+  --font-display: "DM Sans", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-snap-type: y proximity; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--color-bg); color: var(--color-fg);
+  font-family: var(--font-body); font-size: var(--t-body); line-height: 1.5;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+img, video { display: block; max-width: 100%; }
+h1, h2, h3, p, ol, ul, pre, figure { margin: 0; padding: 0; }
+ol, ul { list-style: none; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; border-radius: 4px; }
+
+.skip { position: absolute; left: 16px; top: -64px; z-index: 30; background: var(--color-fg); color: #000; padding: 12px 16px; border-radius: var(--r); font-size: var(--t-cap); text-decoration: none; }
+.skip:focus { top: 16px; }
+
+/* Slides */
+.slide {
+  position: relative; min-height: 100vh; min-height: 100svh;
+  display: grid; align-items: center;
+  padding: var(--safe) var(--safe) calc(var(--safe) + var(--bar));
+  scroll-snap-align: start;
+}
+.wrap { width: 100%; max-width: 1440px; margin: 0 auto; display: grid; gap: var(--gap); grid-template-columns: minmax(0, 1fr); align-items: center; }
+@media (min-width: 1024px) {
+  .wrap.split { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .wrap.even { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .wrap.prompt { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); align-items: start; }
+}
+.text { display: grid; gap: 24px; align-content: start; }
+.head { display: grid; gap: 16px; }
+
+h1, h2 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.04em; line-height: 1.05; text-wrap: balance; }
+h1 { font-size: var(--t-hero); max-width: 14ch; }
+h2 { font-size: var(--t-h); max-width: 18ch; }
+.lede { color: var(--color-muted); max-width: 44ch; text-wrap: pretty; }
+.lede strong, .cell strong { color: var(--color-fg); font-weight: 500; }
+.note { color: var(--color-muted); font-size: var(--t-cap); max-width: 60ch; }
+code, .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.92em; color: var(--color-soft); }
+
+/* Step label: the one accent moment on step slides */
+.step { display: inline-flex; align-items: center; gap: 12px; font-size: var(--t-cap); font-weight: 500; color: var(--color-soft); }
+.step b { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: var(--r); background: var(--color-accent); color: #000; font-weight: 600; }
+
+/* Buttons: 8px corners, never pills */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 0 16px; border-radius: var(--r); border: 1px solid transparent;
+  background: var(--color-fg); color: #000; font: 500 var(--t-cap)/1 var(--font-body);
+  text-decoration: none; cursor: pointer; transition: background-color 150ms ease-out, transform 150ms ease-out;
+  justify-self: start;
+}
+.btn:hover { background: var(--color-soft); }
+.btn:active { transform: translateY(1px); }
+.btn.quiet { background: var(--color-composer); color: var(--color-fg); border-color: var(--color-border); }
+.btn.quiet:hover { background: #242424; }
+.btn[disabled] { opacity: 0.4; cursor: default; }
+
+/* Media */
+.frame { border: 1px solid var(--color-border); border-radius: var(--r-lg); background: var(--color-panel); padding: 8px; }
+.frame .shot { position: relative; border-radius: 10px; overflow: hidden; background: var(--color-stage); aspect-ratio: 16 / 10; }
+.frame .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+.art { border-radius: var(--r-lg); overflow: hidden; background: #000; aspect-ratio: 4 / 3; }
+.art.wide { aspect-ratio: 16 / 9; }
+.art img, .art video { width: 100%; height: 100%; object-fit: cover;
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 52%, #000 45%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 52%, #000 45%, transparent 100%); }
+.mark { position: absolute; border: 2px solid var(--color-accent); border-radius: 10px; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45); pointer-events: none; }
+.mark span { position: absolute; left: -2px; bottom: calc(100% + 6px); background: var(--color-accent); color: #000; font-size: var(--t-foot); font-weight: 600; line-height: 1; padding: 6px 8px; border-radius: 6px; white-space: nowrap; }
+.mark.soft { box-shadow: 0 0 0 4px rgba(0, 153, 255, 0.25); }
+.mark.below span { bottom: auto; top: calc(100% + 6px); left: auto; right: -2px; }
+figcaption { margin-top: 16px; color: var(--color-muted); font-size: var(--t-cap); }
+
+/* Cells: one outlined frame, shared 1px rules */
+.cells { display: grid; border: 1px solid var(--color-border); border-radius: var(--r-lg); overflow: hidden; background: var(--color-border); gap: 1px; }
+.cell { background: var(--color-bg); padding: clamp(20px, 2vw, 32px); display: grid; gap: 12px; align-content: start; }
+.cell h3 { font: 500 var(--t-sub)/1.2 var(--font-display); letter-spacing: -0.02em; }
+.cell p { color: var(--color-muted); font-size: var(--t-cap); }
+.cell .num { font: 500 var(--t-cap)/1 var(--font-body); color: var(--color-muted); }
+.cell .tag { display: inline-flex; align-items: center; gap: 6px; justify-self: start; font-size: var(--t-foot); font-weight: 500; color: var(--color-accent); }
+.say { display: block; background: var(--color-chip); border: 1px solid var(--color-hair); border-radius: var(--r); padding: 12px 14px; color: var(--color-soft); font-size: var(--t-cap); }
+@media (min-width: 768px) {
+  .cells.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cells.c4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cells.c5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1200px) {
+  .cells.c4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .cells.c5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+/* Vague vs specific */
+.pair { display: grid; gap: 16px; }
+.quote { border: 1px solid var(--color-border); border-radius: var(--r-lg); padding: 20px; display: grid; gap: 8px; background: var(--color-panel); }
+.quote .k { display: inline-flex; align-items: center; gap: 8px; font-size: var(--t-cap); font-weight: 500; color: var(--color-muted); }
+.quote p { color: var(--color-soft); }
+.quote.good { border-color: var(--color-accent); }
+.quote.good .k { color: var(--color-accent); }
+.quote.good p { color: var(--color-fg); }
+
+/* Folder tree */
+.tree { border: 1px solid var(--color-border); border-radius: var(--r-lg); background: var(--color-panel); padding: clamp(20px, 2.5vw, 40px); display: grid; gap: 8px; font-size: var(--t-body); }
+.tree .row { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: center; padding: 16px; border-radius: var(--r); border: 1px solid transparent; }
+.tree .row svg { color: var(--color-muted); }
+.tree .row .n { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.9em; overflow-wrap: anywhere; }
+.tree .row .d { display: block; color: var(--color-muted); font-size: var(--t-cap); font-family: var(--font-body); }
+.tree .row.off .n { color: var(--color-muted); }
+.tree .row.on { border-color: var(--color-accent); background: var(--color-bg); }
+.tree .row.on svg, .tree .row.on .d { color: var(--color-accent); }
+.tree .root { color: var(--color-muted); font-size: var(--t-cap); padding: 0 16px 8px; }
+
+/* Prompt block. Structure ported from the 21st.dev "Code Block" by kvnkld (header, copy button, Copied state). */
+.cb { border: 1px solid var(--color-border); border-radius: var(--r-lg); background: var(--color-composer); overflow: hidden; display: grid; min-width: 0; }
+.cbHead { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 12px 12px 20px; border-bottom: 1px solid var(--color-border); }
+.cbFile { display: inline-flex; align-items: center; gap: 10px; color: var(--color-soft); font-size: var(--t-cap); font-weight: 500; min-width: 0; }
+.cbFile svg { flex: none; color: var(--color-muted); }
+.cbCopy { flex: none; min-width: 112px; }
+.cbCopy .ic-done, .cbCopy.done .ic-copy { display: none; }
+.cbCopy.done .ic-done { display: block; }
+.cbBody { position: relative; max-height: min(58svh, 620px); overflow: auto; padding: 20px; scrollbar-color: #333 transparent; }
+.cbText { font-family: var(--font-body); font-size: var(--t-cap); line-height: 1.55; color: var(--color-soft); white-space: pre-wrap; overflow-wrap: anywhere; max-width: 78ch; }
+.cbBody::after { content: ""; position: sticky; bottom: -20px; display: block; height: 40px; background: linear-gradient(to bottom, rgba(26, 26, 26, 0), var(--color-composer)); pointer-events: none; }
+.cbFoot { padding: 10px 20px; border-top: 1px solid var(--color-hair); color: var(--color-muted); font-size: var(--t-foot); }
+
+/* Sample picks file */
+.doc { border: 1px solid var(--color-border); border-radius: var(--r-lg); background: var(--color-panel); overflow: hidden; }
+.doc .cbHead { padding: 16px 20px; }
+.docBody { padding: clamp(20px, 2.2vw, 32px); display: grid; gap: 16px; font-size: var(--t-cap); }
+.docBody h3 { font: 500 var(--t-sub)/1.2 var(--font-display); letter-spacing: -0.02em; }
+.docBody dl { margin: 0; display: grid; gap: 12px; }
+.docBody dl div { display: grid; gap: 2px; }
+@media (min-width: 640px) { .docBody dl div { grid-template-columns: 9.5em minmax(0, 1fr); gap: 16px; } }
+.docBody dt { color: var(--color-muted); }
+.docBody dd { margin: 0; color: var(--color-soft); overflow-wrap: anywhere; }
+.docBody .more { color: var(--color-muted); border-top: 1px solid var(--color-hair); padding-top: 16px; }
+
+/* Fixed bar: wordmark left, position and controls right */
+.progress { position: fixed; inset: 0 0 auto 0; height: 2px; z-index: 20; background: transparent; }
+.progress i { display: block; height: 100%; width: 0; background: var(--color-accent); transition: width 200ms ease-out; }
+.bar {
+  position: fixed; inset: auto 0 0 0; z-index: 20; height: var(--bar);
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 0 var(--safe);
+  background: linear-gradient(to top, #000 55%, rgba(0, 0, 0, 0));
+  font-size: var(--t-foot); color: var(--color-muted);
+}
+.brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: var(--color-soft); text-decoration: none; font-weight: 500; letter-spacing: 0.02em; }
+.brand i { width: 14px; height: 14px; border-radius: 4px; border: 2px solid var(--color-accent); }
+.pos { display: inline-flex; align-items: center; gap: 12px; font-variant-numeric: tabular-nums; }
+.nav { display: none; gap: 8px; }
+.nav button { width: 40px; height: 40px; min-height: 40px; padding: 0; }
+@media (min-width: 768px) and (pointer: fine) { .nav { display: inline-flex; } }
+
+/* Motion: transform and opacity only, 300ms, off when reduced motion is set */
+.js .reveal { opacity: 0; transform: translateY(16px); }
+.js .in .reveal { opacity: 1; transform: none; transition: opacity 300ms ease-out, transform 300ms ease-out; transition-delay: calc(var(--i, 0) * 70ms); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal { opacity: 1; transform: none; }
+  .js .in .reveal, .btn, .progress i { transition: none; }
+}
+@media (max-width: 1023px) {
+  .slide { align-items: start; padding-top: calc(var(--safe) + 24px); }
+  .cbBody { max-height: 60svh; }
+}
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+</style>
+</head>
+<body>
+<a class="skip" href="#s2">Skip to the guide</a>
+<div class="progress" aria-hidden="true"><i id="progress"></i></div>
+
+<main id="deck">
+
+<!-- 1. Title -->
+<section class="slide" id="s1" aria-labelledby="h1">
+  <div class="wrap split">
+    <div class="text">
+      <div class="head">
+        <h1 id="h1" class="reveal">Pick what you like from the CORE UI Mockup.</h1>
+        <p class="lede reveal" style="--i:1">Two prompts and one walk-through. Claude sets it up, takes notes while you talk, and writes up your picks.</p>
+      </div>
+      <a class="btn reveal" style="--i:2" href="#s2">Start
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </a>
+      <p class="note reveal" style="--i:3">About 30 minutes. For a Mac with the Claude desktop app.</p>
+    </div>
+    <figure class="art wide reveal" style="--i:2">
+      <!--HERO-MEDIA--><img src="assets/hero.webp" alt="" width="1600" height="900" fetchpriority="high"><!--/HERO-MEDIA-->
+    </figure>
+  </div>
+</section>
+
+<!-- 2. Why a separate folder -->
+<section class="slide" id="s2" aria-labelledby="h2">
+  <div class="wrap even">
+    <div class="text">
+      <div class="head">
+        <h2 id="h2" class="reveal">Review it away from the real app.</h2>
+        <p class="lede reveal" style="--i:1">Clone the mockup into its own folder, outside <code>treatment-app-blueprint</code>, and start a fresh Claude session there.</p>
+        <p class="lede reveal" style="--i:2"><strong>Claude sees only the mockup</strong>, so its review isn't shaped by how CORE is built today.</p>
+      </div>
+    </div>
+    <figure class="art reveal" style="--i:1">
+      <img src="assets/two-folders.webp" alt="Two folders standing well apart: a large dark one, and a small clean one lit in blue." width="1600" height="1200" loading="lazy">
+    </figure>
+  </div>
+</section>
+
+<!-- 3. The path -->
+<section class="slide" id="s3" aria-labelledby="h3">
+  <div class="wrap">
+    <div class="head">
+      <h2 id="h3" class="reveal">Five steps. Two are copy and paste.</h2>
+    </div>
+    <ol class="cells c5 reveal" style="--i:1">
+      <li class="cell"><span class="num">1</span><h3>New folder, new session</h3><p>A clean place for Claude to work.</p></li>
+      <li class="cell"><span class="num">2</span><h3>Paste prompt one</h3><p>Claude clones the mockup and opens it.</p>
+        <span class="tag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2"/></svg>Copy and paste</span></li>
+      <li class="cell"><span class="num">3</span><h3>Walk and talk</h3><p>Dictate what you like as you click around.</p></li>
+      <li class="cell"><span class="num">4</span><h3>Say &ldquo;that's everything&rdquo;</h3><p>Claude writes your picks to one file.</p></li>
+      <li class="cell"><span class="num">5</span><h3>Paste prompt two in CORE</h3><p>Claude builds your picks on a new branch.</p>
+        <span class="tag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2"/></svg>Copy and paste</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 4. Before you start -->
+<section class="slide" id="s4" aria-labelledby="h4">
+  <div class="wrap">
+    <div class="head">
+      <h2 id="h4" class="reveal">Have three things ready.</h2>
+    </div>
+    <ul class="cells c3 reveal" style="--i:1">
+      <li class="cell"><h3>The GitHub invite</h3><p>Accept the invite to <strong>ChateauHealth/CORE-UI-Mockup</strong>. The repo is private, so the clone fails without it.</p></li>
+      <li class="cell"><h3>Claude on your Mac</h3><p>The Claude desktop app, on the <strong>Code</strong> tab. Claude Code in a terminal works too.</p></li>
+      <li class="cell"><h3>Dictation</h3><p><strong>Wispr Flow</strong>, or the dictation built into your Mac. Anything that types what you say.</p></li>
+    </ul>
+    <p class="note reveal" style="--i:2">Prompt one has Claude check Node.js and your GitHub sign-in. If either is missing, it tells you what to do.</p>
+  </div>
+</section>
+
+<!-- 5. Step 1 -->
+<section class="slide" id="s5" aria-labelledby="h5">
+  <div class="wrap even">
+    <div class="text">
+      <div class="head">
+        <p class="step reveal"><b>1</b>Step 1 of 5</p>
+        <h2 id="h5" class="reveal" style="--i:1">Start a new session in an empty folder.</h2>
+        <p class="lede reveal" style="--i:2">Make a folder called <code>core-mockup-review</code> in your home folder. In Claude, start a new session and choose that folder.</p>
+      </div>
+      <p class="note reveal" style="--i:3">Use that exact name and both prompts work with no edits.</p>
+    </div>
+    <div class="tree reveal" style="--i:2" role="img" aria-label="Your home folder with two folders in it. treatment-app-blueprint is the real app: do not work there. core-mockup-review is the new, empty folder: start the session here.">
+      <p class="root">Your home folder</p>
+      <div class="row off">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <span class="n">treatment-app-blueprint<span class="d">The real app. Not here.</span></span>
+      </div>
+      <div class="row on">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M12 11v4M10 13h4"/></svg>
+        <span class="n">core-mockup-review<span class="d">New and empty. Start the session here.</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. Step 2: prompt one -->
+<section class="slide" id="s6" aria-labelledby="h6">
+  <div class="wrap prompt">
+    <div class="text">
+      <div class="head">
+        <p class="step reveal"><b>2</b>Step 2 of 5</p>
+        <h2 id="h6" class="reveal" style="--i:1">Paste prompt one and send it.</h2>
+        <p class="lede reveal" style="--i:2">Claude clones the mockup, opens the preview and reads the code. <strong>It changes nothing.</strong></p>
+      </div>
+      <p class="note reveal" style="--i:3">Wait until it says the mockup is ready.</p>
+    </div>
+    <div class="cb reveal" style="--i:2">
+      <div class="cbHead">
+        <span class="cbFile">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>Prompt one &middot; the review session</span>
+        </span>
+        <button class="btn cbCopy" type="button" data-copy="p1">
+          <svg class="ic-copy" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2"/></svg>
+          <svg class="ic-done" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.75 6 6 9-13.5"/></svg>
+          <span class="lbl">Copy</span>
+        </button>
+      </div>
+      <div class="cbBody" tabindex="0" role="region" aria-label="Prompt one, full text">
+<pre class="cbText" id="p1">Set up the CORE UI Mockup so I can review it. Work only inside this folder.
+
+1. Check that Node.js is installed and that my GitHub sign-in can reach the private repo. If either fails, stop and tell me exactly what to do, in plain steps.
+2. Clone https://github.com/ChateauHealth/CORE-UI-Mockup into this folder.
+3. Read its CLAUDE.md and README, install what it needs, start it, and open the preview in my browser.
+4. Read through the code so you know which files build each page and component. This is a read-only review: do not change, fix or improve anything.
+
+Tell me when it's ready, then wait.
+
+Next I'll click through the preview and dictate what I like, over one or more messages. Dictation makes mistakes, so match what I say to the nearest real page, heading or component. Ask only if you truly can't tell. Don't write any files yet. Reply "Noted" with a short list of what you matched.
+
+When I say "that's everything", write "CORE DESIGN MOCKUP PICKS.md" in this folder, outside the clone. For each pick, list:
+- Name, and whether it's a page, component, feature or style
+- Where to find it: module, page, the heading on screen, and the role to view it as
+- What it's for
+- What I liked about it, in my words
+- Code: every file that builds it (page, shared components, CSS, design tokens), as paths from the repo root
+
+End the file with a short note on using it in CORE: the mockup is plain React and CSS with made-up data, so each pick should be rebuilt with CORE's own components, not copied over. Then give me the file's full path.</pre>
+      </div>
+      <p class="cbFoot">This one prompt covers steps 2, 3 and 4.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7. What opens -->
+<section class="slide" id="s7" aria-labelledby="h7">
+  <div class="wrap split">
+    <div class="text">
+      <div class="head">
+        <h2 id="h7" class="reveal">The mockup opens in a preview.</h2>
+        <p class="lede reveal" style="--i:1">Every name and number in it is made up. Use the <strong>role switcher</strong>, top right, to see CORE as ten different staff.</p>
+      </div>
+    </div>
+    <figure class="frame reveal" style="--i:1">
+      <div class="shot">
+        <img src="assets/screen-home-exec.webp" alt="The mockup's Home dashboard for the Executive role: census, money collected, a Needs your attention list and a Waiting on you list." width="1920" height="1200" loading="lazy">
+        <span class="mark soft below" style="left:83%;top:0.8%;width:15.4%;height:4.6%"><span>Role switcher</span></span>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- 8. Step 3 -->
+<section class="slide" id="s8" aria-labelledby="h8">
+  <div class="wrap even">
+    <div class="text">
+      <div class="head">
+        <p class="step reveal"><b>3</b>Step 3 of 5</p>
+        <h2 id="h8" class="reveal" style="--i:1">Turn on dictation and talk as you click.</h2>
+        <p class="lede reveal" style="--i:2">Click into Claude's message box, start Wispr Flow, and say what you like as you move through the preview.</p>
+      </div>
+      <p class="note reveal" style="--i:3">Send as many messages as you want. Claude replies &ldquo;Noted&rdquo; and keeps listening.</p>
+    </div>
+    <figure class="art reveal" style="--i:2">
+      <!--DICT-MEDIA--><img src="assets/dictation.webp" alt="A studio microphone with a blue sound wave flowing out of it." width="1600" height="1200" loading="lazy"><!--/DICT-MEDIA-->
+    </figure>
+  </div>
+</section>
+
+<!-- 9. Be specific -->
+<section class="slide" id="s9" aria-labelledby="h9">
+  <div class="wrap split">
+    <div class="text">
+      <div class="head">
+        <h2 id="h9" class="reveal">Name the page and the heading.</h2>
+      </div>
+      <div class="pair reveal" style="--i:1">
+        <div class="quote">
+          <span class="k"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>Too vague</span>
+          <p>&ldquo;I like the board thing.&rdquo;</p>
+        </div>
+        <div class="quote good">
+          <span class="k"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.75 6 6 9-13.5"/></svg>Specific enough</span>
+          <p>&ldquo;On the Daily board, the panel titled &lsquo;Where clients are&rsquo; looks awesome. I want that.&rdquo;</p>
+        </div>
+      </div>
+    </div>
+    <figure class="frame reveal" style="--i:1">
+      <div class="shot">
+        <img src="assets/screen-daily-board.webp" alt="The mockup's Daily board. The panel titled Where clients are is outlined: three columns for In the house, At group and Signed out." width="1920" height="1200" loading="lazy">
+        <span class="mark" style="left:18%;top:28.4%;width:80.1%;height:46.3%"><span>&ldquo;Where clients are&rdquo;</span></span>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- 10. What to say -->
+<section class="slide" id="s10" aria-labelledby="h10">
+  <div class="wrap">
+    <div class="head">
+      <h2 id="h10" class="reveal">Four things worth saying out loud.</h2>
+    </div>
+    <ul class="cells c4 reveal" style="--i:1">
+      <li class="cell"><h3>The page</h3><p>Read it off the top bar.</p><span class="say">&ldquo;I'm on Revenue, Billing review.&rdquo;</span></li>
+      <li class="cell"><h3>The heading</h3><p>Any title, tab or label on screen.</p><span class="say">&ldquo;The table with the &lsquo;Ready to bill&rsquo; tab.&rdquo;</span></li>
+      <li class="cell"><h3>The role</h3><p>Pages change by role.</p><span class="say">&ldquo;I'm viewing as Executive.&rdquo;</span></li>
+      <li class="cell"><h3>The reason</h3><p>Layout, colour, wording or behaviour.</p><span class="say">&ldquo;I like the status in the last column.&rdquo;</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 11. Step 4 -->
+<section class="slide" id="s11" aria-labelledby="h11">
+  <div class="wrap even">
+    <div class="text">
+      <div class="head">
+        <p class="step reveal"><b>4</b>Step 4 of 5</p>
+        <h2 id="h11" class="reveal" style="--i:1">Say &ldquo;that's everything.&rdquo;</h2>
+        <p class="lede reveal" style="--i:2">Claude writes one file in your review folder. Each pick lists <strong>where it is, what it's for, what you liked and the code that builds it.</strong></p>
+      </div>
+    </div>
+    <div class="doc reveal" style="--i:2" role="img" aria-label="Example of the picks file. Pick 1: Where clients are, a component. Where: Care, Daily board, under the heading Where clients are, viewed as Program staff. What it's for: shows who is in the house, at group or signed out right now. What you liked: three columns and the late flag. Code: src/pages/care.jsx and src/styles/components.css.">
+      <div class="cbHead">
+        <span class="cbFile">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
+          <span>CORE DESIGN MOCKUP PICKS.md</span>
+        </span>
+      </div>
+      <div class="docBody" aria-hidden="true">
+        <h3>1. Where clients are</h3>
+        <dl>
+          <div><dt>Type</dt><dd>Component</dd></div>
+          <div><dt>Where</dt><dd>Care &rsaquo; Daily board, heading &ldquo;Where clients are&rdquo;, as Program staff</dd></div>
+          <div><dt>What it's for</dt><dd>Shows who is in the house, at group or signed out right now</dd></div>
+          <div><dt>What you liked</dt><dd>&ldquo;Three columns, and the late flag jumps out.&rdquo;</dd></div>
+          <div><dt>Code</dt><dd class="mono">core-vision-prototype/src/pages/care.jsx<br>core-vision-prototype/src/styles/components.css</dd></div>
+        </dl>
+        <p class="more">2. Billing review table &nbsp;&middot;&nbsp; 3. Needs your attention list &nbsp;&middot;&nbsp; &hellip;</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12. Step 5: prompt two -->
+<section class="slide" id="s12" aria-labelledby="h12">
+  <div class="wrap prompt">
+    <div class="text">
+      <div class="head">
+        <p class="step reveal"><b>5</b>Step 5 of 5</p>
+        <h2 id="h12" class="reveal" style="--i:1">Open CORE and paste prompt two.</h2>
+        <p class="lede reveal" style="--i:2">Start a new session in <code>treatment-app-blueprint</code>. Claude builds each pick on a new branch with CORE's own components. <strong>Nothing goes live.</strong></p>
+      </div>
+      <p class="note reveal" style="--i:3">Used a different folder name in step 1? Change the two paths at the top.</p>
+    </div>
+    <div class="cb reveal" style="--i:2">
+      <div class="cbHead">
+        <span class="cbFile">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>Prompt two &middot; the CORE session</span>
+        </span>
+        <button class="btn cbCopy" type="button" data-copy="p2">
+          <svg class="ic-copy" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2"/></svg>
+          <svg class="ic-done" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.75 6 6 9-13.5"/></svg>
+          <span class="lbl">Copy</span>
+        </button>
+      </div>
+      <div class="cbBody" tabindex="0" role="region" aria-label="Prompt two, full text">
+<pre class="cbText" id="p2">Read "~/core-mockup-review/CORE DESIGN MOCKUP PICKS.md". It lists the parts of the CORE UI Mockup I want in CORE, and the mockup files that build each one. The mockup itself is at ~/core-mockup-review/CORE-UI-Mockup. Treat that folder as read-only reference.
+
+Bring every pick into this app in one pass:
+
+1. For each pick, find where it belongs here and what already exists. Rebuild it with CORE's own components, design tokens and patterns. Match the look and behaviour. Never copy the mockup's sample data.
+2. Work on a new branch and follow this repo's own rules. Do not merge, deploy, or touch staging or production.
+3. Build the picks in the order listed, and check each one in the preview before moving on.
+4. Don't stop to ask me about small choices. Make the sensible call and write it down. Stop only for something that would change real data, permissions or what staff see in production.
+
+When you're done, give me one summary: what you built and where to see it, what you skipped or changed and why, and anything that needs my decision.</pre>
+      </div>
+      <p class="cbFoot">One pass, on a branch. You review at the end.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 13. If something goes wrong -->
+<section class="slide" id="s13" aria-labelledby="h13">
+  <div class="wrap">
+    <div class="head">
+      <h2 id="h13" class="reveal">If something goes wrong, say this.</h2>
+    </div>
+    <ul class="cells c3 reveal" style="--i:1">
+      <li class="cell"><h3>GitHub or Node.js is missing</h3><p>Do the steps Claude gives you, then:</p><span class="say">&ldquo;Done. Try again.&rdquo;</span></li>
+      <li class="cell"><h3>The preview closed or is blank</h3><p>In the review session:</p><span class="say">&ldquo;Open the preview again.&rdquo;</span></li>
+      <li class="cell"><h3>You thought of more picks</h3><p>Back in the review session, dictate them, then:</p><span class="say">&ldquo;Update the picks file.&rdquo;</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 14. Close -->
+<section class="slide" id="s14" aria-labelledby="h14">
+  <div class="wrap even">
+    <div class="text">
+      <div class="head">
+        <h2 id="h14" class="reveal">Two prompts. One walk-through. Your picks in CORE.</h2>
+        <p class="lede reveal" style="--i:1">Look over the branch Claude built, then decide what ships.</p>
+      </div>
+      <a class="btn quiet reveal" style="--i:2" href="#s1">Back to the start</a>
+    </div>
+    <figure class="art reveal" style="--i:1">
+      <img src="assets/handoff.webp" alt="A blue interface tile travelling along a line of light from one app window into an empty slot in another." width="1600" height="1200" loading="lazy">
+    </figure>
+  </div>
+</section>
+
+</main>
+
+<footer class="bar">
+  <a class="brand" href="#s1" aria-label="CORE UI Mockup guide, back to the first slide"><i aria-hidden="true"></i>CORE UI Mockup</a>
+  <div class="pos">
+    <span id="count" aria-live="off">1 / 14</span>
+    <span class="nav">
+      <button class="btn quiet" type="button" id="prev" aria-label="Previous slide"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+      <button class="btn quiet" type="button" id="next" aria-label="Next slide"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg></button>
+    </span>
+  </div>
+</footer>
+<p class="sr" id="live" role="status" aria-live="polite"></p>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  root.classList.add('js');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var count = document.getElementById('count');
+  var progress = document.getElementById('progress');
+  var prev = document.getElementById('prev');
+  var next = document.getElementById('next');
+  var live = document.getElementById('live');
+  var current = 0;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function setCurrent(i) {
+    current = i;
+    count.textContent = (i + 1) + ' / ' + slides.length;
+    progress.style.width = ((i + 1) / slides.length * 100) + '%';
+    prev.disabled = i === 0;
+    next.disabled = i === slides.length - 1;
+  }
+  function go(i) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    slides[i].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  }
+
+  if ('IntersectionObserver' in window) {
+    // Reveal a slide's content once a slice of it is on screen.
+    var seen = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    // The current slide is the one crossing the middle of the screen.
+    var mid = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) setCurrent(slides.indexOf(e.target)); });
+    }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+    slides.forEach(function (s) { seen.observe(s); mid.observe(s); });
+  } else {
+    slides.forEach(function (s) { s.classList.add('in'); });
+  }
+  setCurrent(0);
+
+  prev.addEventListener('click', function () { go(current - 1); });
+  next.addEventListener('click', function () { go(current + 1); });
+  document.addEventListener('keydown', function (e) {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    var t = e.target;
+    if (t && t.closest && t.closest('button, a, input, textarea, select, .cbBody')) return;
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) { e.preventDefault(); go(current + 1); }
+    else if (e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) { e.preventDefault(); go(current - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); go(0); }
+    else if (e.key === 'End') { e.preventDefault(); go(slides.length - 1); }
+  });
+
+  // Copy buttons
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    var ok = false; try { ok = document.execCommand('copy'); } catch (err) {}
+    document.body.removeChild(ta); return ok;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'), function (btn) {
+    var lbl = btn.querySelector('.lbl'); var timer;
+    function done(ok) {
+      btn.classList.toggle('done', ok);
+      lbl.textContent = ok ? 'Copied' : 'Select and copy';
+      live.textContent = ok ? 'Prompt copied to the clipboard.' : 'Copy failed. Select the prompt text and copy it by hand.';
+      clearTimeout(timer);
+      timer = setTimeout(function () { btn.classList.remove('done'); lbl.textContent = 'Copy'; live.textContent = ''; }, 1800);
+    }
+    btn.addEventListener('click', function () {
+      var text = document.getElementById(btn.getAttribute('data-copy')).textContent.trim();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(fallbackCopy(text)); });
+      } else { done(fallbackCopy(text)); }
+    });
+  });
+
+  // Loops: play only on screen, and not at all when reduced motion is set.
+  var vids = Array.prototype.slice.call(document.querySelectorAll('video'));
+  if (reduce) { vids.forEach(function (v) { v.removeAttribute('autoplay'); v.pause(); }); }
+  else if ('IntersectionObserver' in window) {
+    var play = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { var p = e.target.play(); if (p && p.catch) p.catch(function () {}); } else { e.target.pause(); } });
+    }, { threshold: 0.25 });
+    vids.forEach(function (v) { play.observe(v); });
+  }
+})();
+</script>
+</body>
+</html>
